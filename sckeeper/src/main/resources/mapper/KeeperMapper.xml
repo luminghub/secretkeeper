@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mlog.sckeeper.mapper.KeeperMapper">
+
+	<resultMap type="com.mlog.sckeeper.entity.Keeper" id="kepperEntity">
+		<id jdbcType="INTEGER" property="id" column="SEID" />
+		<result jdbcType="VARCHAR" property="userName" column="USERNAME" />
+		<result jdbcType="VARCHAR" property="key" column="KEYNAME" />
+		<result jdbcType="VARCHAR" property="value" column="KEYVALUE" />
+		<result jdbcType="VARCHAR" property="note" column="NOTE" />
+	</resultMap>
+
+	<!-- 获取全部存储的私人密码 -->
+	<select id="getKeepers" resultMap="kepperEntity">
+		SELECT
+		*
+		FROM KEEPER
+		WHERE
+		USERNAME=#{userName}
+	</select>
+
+	<!-- 获取全部存储的私人密码 -->
+	<select id="getKeeper" resultMap="kepperEntity">
+		SELECT
+		*
+		FROM KEEPER
+		WHERE
+		USERNAME=#{userName} AND SEID=#{keeperId}
+	</select>
+
+	<!-- 更新一条密码记录 -->
+	<update id="updateKeeper" parameterType="com.mlog.sckeeper.entity.Keeper">
+		UPDATE KEEPER SET
+		KEYNAME=#{keeper.key} ,KEYVALUE=#{keeper.value},NOTE=#{keeper.note}
+		WHERE
+		USERNAME=#{keeper.userName} AND SEID=#{keeper.id}
+	</update>
+
+	<!-- 删除一条密码记录 -->
+	<delete id="deleteKeeper">
+		DELETE FROM KEEPER WHERE
+		USERNAME=#{userName} AND
+		SEID=#{keeperId}
+	</delete>
+
+	<!-- 新增一条密码记录 -->
+	<insert id="addKeeper" parameterType="com.mlog.sckeeper.entity.Keeper">
+		INSERT INTO
+		KEEPER(USERNAME,KEYNAME,KEYVALUE,NOTE)
+		VALUES
+		(#{keeper.userName},#{keeper.key},#{keeper.value},#{keeper.note})
+	</insert>
+
+</mapper>
